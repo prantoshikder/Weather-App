@@ -1,18 +1,19 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import Background from "@/components/Background";
+import CurrentWeatherCard from "@/components/CurrentWeather";
+import DailyForecast from "@/components/DailyForecast";
+import HourlyForecast from "@/components/HourlyForecast";
+import SearchBar from "@/components/SearchBar";
+import SeoContent from "@/components/SeoContent";
+import WeatherDetails from "@/components/WeatherDetails";
 import {
   describeWeather,
   getWeather,
   type GeoResult,
   type WeatherBundle,
 } from "@/lib/weather";
-import Background from "@/components/Background";
-import SearchBar from "@/components/SearchBar";
-import CurrentWeatherCard from "@/components/CurrentWeather";
-import WeatherDetails from "@/components/WeatherDetails";
-import HourlyForecast from "@/components/HourlyForecast";
-import DailyForecast from "@/components/DailyForecast";
+import { useCallback, useEffect, useState } from "react";
 
 const DEFAULT_CITY: GeoResult = {
   id: 2643743,
@@ -51,7 +52,7 @@ export default function Home() {
     async (latitude: number, longitude: number) => {
       try {
         const res = await fetch(
-          `https://geocoding-api.open-meteo.com/v1/search?latitude=${latitude}&longitude=${longitude}&count=1&language=en&format=json`
+          `https://geocoding-api.open-meteo.com/v1/search?latitude=${latitude}&longitude=${longitude}&count=1&language=en&format=json`,
         );
         const data = await res.json();
         const place = data.results?.[0];
@@ -77,7 +78,7 @@ export default function Home() {
         });
       }
     },
-    [load]
+    [load],
   );
 
   // Request the device location. `silent` skips error UI / fallback for the
@@ -100,10 +101,10 @@ export default function Home() {
           if (silent) load(DEFAULT_CITY);
           else setError("Unable to retrieve your location");
         },
-        { enableHighAccuracy: false, timeout: 10000, maximumAge: 600000 }
+        { enableHighAccuracy: false, timeout: 10000, maximumAge: 600000 },
       );
     },
-    [load, loadByCoords]
+    [load, loadByCoords],
   );
 
   // On first load, try to center on the user's current location automatically.
@@ -120,12 +121,19 @@ export default function Home() {
     <>
       <Background group={group} isDay={isDay} />
 
-      <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-6 px-4 py-8 sm:px-6 sm:py-12">
+      <main className="mx-auto flex min-h-screen w-full flex-col gap-6 px-4 py-8 sm:px-6 sm:py-12">
         <header className="flex flex-col items-center gap-5 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-2 self-start sm:self-auto">
-            <span className="text-2xl">🌤️</span>
+          {/* The page's single h1 — the visible mark plus a crawlable summary. */}
+          <h1 className="flex items-center gap-2 self-start sm:self-auto">
+            <span className="text-2xl" aria-hidden="true">
+              🌤️
+            </span>
             <span className="text-xl font-semibold tracking-tight">Aura</span>
-          </div>
+            <span className="sr-only">
+              — live weather forecast, hourly updates and a 7-day outlook for
+              any city
+            </span>
+          </h1>
           <SearchBar
             onSelect={load}
             onUseLocation={() => useLocation(false)}
@@ -134,7 +142,10 @@ export default function Home() {
         </header>
 
         {error && (
-          <div className="glass rounded-2xl border-red-300/30 bg-red-500/15 px-4 py-3 text-sm text-red-100">
+          <div
+            role="alert"
+            className="glass rounded-2xl border-red-300/30 bg-red-500/15 px-4 py-3 text-sm text-red-100"
+          >
             {error}
           </div>
         )}
@@ -154,10 +165,15 @@ export default function Home() {
               </div>
             </div>
 
-            <HourlyForecast hourly={weather.hourly} timezone={weather.timezone} />
+            <HourlyForecast
+              hourly={weather.hourly}
+              timezone={weather.timezone}
+            />
             <DailyForecast daily={weather.daily} timezone={weather.timezone} />
           </div>
         ) : null}
+
+        <SeoContent />
 
         <footer className="mt-auto pt-6 text-center text-xs text-white/50">
           Weather by Open-Meteo · Photography by Unsplash
@@ -169,7 +185,13 @@ export default function Home() {
 
 function LoadingState() {
   return (
-    <div className="flex flex-col gap-6">
+    <div
+      role="status"
+      aria-live="polite"
+      aria-busy="true"
+      className="flex flex-col gap-6"
+    >
+      <span className="sr-only">Loading the latest forecast…</span>
       <div className="glass h-56 animate-pulse rounded-3xl" />
       <div className="glass h-40 animate-pulse rounded-3xl" />
       <div className="glass h-72 animate-pulse rounded-3xl" />

@@ -19,18 +19,24 @@ export default function CurrentWeatherCard({ city, current, timezone }: Props) {
   }).format(new Date(current.time));
 
   return (
-    <section className="animate-float-up glass rounded-3xl p-7 sm:p-9">
+    <section
+      aria-label={`Current weather in ${city.name}`}
+      className="animate-float-up glass rounded-3xl p-7 sm:p-9"
+    >
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
             {city.name}
-          </h1>
+          </h2>
           <p className="mt-1 text-sm text-white/70">
             {[city.admin1, city.country].filter(Boolean).join(", ")}
           </p>
           <p className="mt-0.5 text-sm text-white/55">{localTime}</p>
         </div>
-        <span className="text-6xl leading-none drop-shadow-lg sm:text-7xl">
+        <span
+          aria-hidden="true"
+          className="text-6xl leading-none drop-shadow-lg sm:text-7xl"
+        >
           {condition.icon}
         </span>
       </div>

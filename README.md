@@ -15,11 +15,14 @@ condition-aware Unsplash photography that changes with the weather and time of d
 - **Dynamic backgrounds**: curated high-quality Unsplash photos selected by weather
   condition and day/night, with a smooth cross-fade and readability overlay.
 - **Glassmorphism UI**, responsive layout, and subtle entrance animations.
+- **SEO ready**: canonical URL, Open Graph/Twitter cards, generated social image,
+  `robots.txt`, `sitemap.xml`, PWA manifest and JSON-LD structured data.
 
 ## 🚀 Getting started
 
 ```bash
 npm install
+cp .env.example .env.local   # then set NEXT_PUBLIC_SITE_URL
 npm run dev      # start the dev server at http://localhost:3000
 ```
 
@@ -50,8 +53,32 @@ src/
     └── unsplash.ts        # Condition → background image/overlay mapping
 ```
 
+## 🔍 SEO
+
+All SEO values live in one place — `src/lib/site.ts` (name, title, description,
+keywords, author). Edit that file and every consumer updates:
+
+| Route / file | What it does |
+| --- | --- |
+| `app/layout.tsx` | Title template, description, keywords, canonical, OG + Twitter tags, robots directives, `WebApplication` / `WebSite` JSON-LD |
+| `app/robots.ts` | `/robots.txt` with the sitemap reference |
+| `app/sitemap.ts` | `/sitemap.xml` |
+| `app/manifest.ts` | `/manifest.webmanifest` for installable PWA |
+| `app/opengraph-image.tsx` | 1200×630 social card, generated at build time |
+| `components/SeoContent.tsx` | Crawlable intro copy + FAQ with `FAQPage` JSON-LD |
+
+> **Important:** set `NEXT_PUBLIC_SITE_URL` to your real domain before
+> deploying. Without it, canonical URLs, OG images and the sitemap fall back to
+> `http://localhost:3000`.
+
+After deploying, submit `https://your-domain.com/sitemap.xml` in Google Search
+Console and validate the structured data with the
+[Rich Results Test](https://search.google.com/test/rich-results).
+
 ## 📝 Notes
 
 - Weather data: [Open-Meteo](https://open-meteo.com) (free, no key).
 - Photography: [Unsplash](https://unsplash.com) (stable direct image URLs).
+- The forecast is fetched in the browser, so it is not part of the server-rendered
+  HTML. `SeoContent` provides the static text crawlers index.
 # Weather-App

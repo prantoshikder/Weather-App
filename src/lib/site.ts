@@ -27,9 +27,24 @@ export const siteConfig = {
     "precipitation",
   ],
   author: {
-    name: "Prantosh Sikder",
-    url: "https://github.com/prantoshikder",
+    name: "Pranto Shikder",
+    // The canonical identity link — portfolio first, profiles as `sameAs`.
+    url: "https://prantoshikder.vercel.app",
+    github: "https://github.com/prantoshikder",
   },
+  repo: "https://github.com/prantoshikder/Weather-App",
+  sources: [
+    {
+      name: "Open-Meteo",
+      url: "https://open-meteo.com",
+      description: "Weather data",
+    },
+    {
+      name: "Unsplash",
+      url: "https://unsplash.com",
+      description: "Photography",
+    },
+  ],
 } as const;
 
 /** Absolute URL helper — metadata and the sitemap need fully-qualified links. */

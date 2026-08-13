@@ -1,5 +1,7 @@
 "use client";
 
+import { useUnits } from "@/components/UnitsProvider";
+import { formatTemp, formatTempWithUnit } from "@/lib/units";
 import { describeWeather, type CurrentWeather, type GeoResult } from "@/lib/weather";
 
 interface Props {
@@ -9,6 +11,7 @@ interface Props {
 }
 
 export default function CurrentWeatherCard({ city, current, timezone }: Props) {
+  const { system } = useUnits();
   const condition = describeWeather(current.weatherCode, current.isDay);
 
   const localTime = new Intl.DateTimeFormat("en-US", {
@@ -43,12 +46,12 @@ export default function CurrentWeatherCard({ city, current, timezone }: Props) {
 
       <div className="mt-6 flex items-end gap-4">
         <span className="text-7xl font-extralight leading-none tracking-tighter sm:text-8xl">
-          {current.temperature}°
+          {formatTempWithUnit(current.temperature, system)}
         </span>
         <div className="mb-2">
           <p className="text-lg font-medium">{condition.label}</p>
           <p className="text-sm text-white/70">
-            Feels like {current.apparentTemperature}°
+            Feels like {formatTemp(current.apparentTemperature, system)}
           </p>
         </div>
       </div>

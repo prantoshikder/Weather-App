@@ -1,3 +1,4 @@
+import UnitsProvider from "@/components/UnitsProvider";
 import { absoluteUrl, siteConfig } from "@/lib/site";
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
@@ -77,8 +78,11 @@ const jsonLd = {
       inLanguage: "en",
       author: {
         "@type": "Person",
+        "@id": absoluteUrl("/#author"),
         name: siteConfig.author.name,
         url: siteConfig.author.url,
+        // Ties the portfolio and the code profile to one entity for search engines.
+        sameAs: [siteConfig.author.url, siteConfig.author.github],
       },
       offers: {
         "@type": "Offer",
@@ -101,6 +105,7 @@ const jsonLd = {
       name: siteConfig.name,
       description: siteConfig.shortDescription,
       inLanguage: "en",
+      publisher: { "@id": absoluteUrl("/#author") },
     },
   ],
 };
@@ -124,7 +129,7 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning suppressContentEditableWarning>
-        {children}
+        <UnitsProvider>{children}</UnitsProvider>
       </body>
     </html>
   );

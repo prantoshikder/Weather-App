@@ -75,6 +75,12 @@ After deploying, submit `https://your-domain.com/sitemap.xml` in Google Search
 Console and validate the structured data with the
 [Rich Results Test](https://search.google.com/test/rich-results).
 
+## 👤 Author
+
+Built by [Pranto Shikder](https://prantoshikder.vercel.app) —
+[portfolio](https://prantoshikder.vercel.app) ·
+[GitHub](https://github.com/prantoshikder)
+
 ## 📝 Notes
 
 - Weather data: [Open-Meteo](https://open-meteo.com) (free, no key).

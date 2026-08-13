@@ -37,8 +37,9 @@ const faqJsonLd = {
 export default function SeoContent() {
   return (
     <section
+      id="about"
       aria-labelledby="about-heading"
-      className="glass mt-4 rounded-3xl p-6 text-sm leading-relaxed text-white/70 sm:p-8"
+      className="glass mt-4 scroll-mt-24 rounded-3xl p-6 text-sm leading-relaxed text-white/70 sm:p-8"
     >
       <script
         type="application/ld+json"
@@ -64,7 +65,7 @@ export default function SeoContent() {
         works on phones, tablets and desktops.
       </p>
 
-      <h2 className="mt-8 text-base font-semibold text-white">
+      <h2 id="faq" className="mt-8 scroll-mt-24 text-base font-semibold text-white">
         Frequently asked questions
       </h2>
       <dl className="mt-3 space-y-4">

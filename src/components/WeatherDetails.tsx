@@ -1,5 +1,12 @@
 "use client";
 
+import { useUnits } from "@/components/UnitsProvider";
+import {
+  formatPrecipitation,
+  formatPressure,
+  formatTemp,
+  formatWind,
+} from "@/lib/units";
 import { windDirectionLabel, type CurrentWeather } from "@/lib/weather";
 
 function Detail({
@@ -33,10 +40,12 @@ const stroke = {
 };
 
 export default function WeatherDetails({ current }: { current: CurrentWeather }) {
+  const { system } = useUnits();
+
   const items = [
     {
       label: "Feels like",
-      value: `${current.apparentTemperature}°`,
+      value: formatTemp(current.apparentTemperature, system),
       icon: (
         <svg className="h-5 w-5" viewBox="0 0 24 24" {...stroke}>
           <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z" />
@@ -54,7 +63,7 @@ export default function WeatherDetails({ current }: { current: CurrentWeather })
     },
     {
       label: "Wind",
-      value: `${current.windSpeed} km/h ${windDirectionLabel(current.windDirection)}`,
+      value: `${formatWind(current.windSpeed, system)} ${windDirectionLabel(current.windDirection)}`,
       icon: (
         <svg className="h-5 w-5" viewBox="0 0 24 24" {...stroke}>
           <path d="M3 8h11a3 3 0 1 0-3-3M3 16h15a3 3 0 1 1-3 3" />
@@ -73,7 +82,7 @@ export default function WeatherDetails({ current }: { current: CurrentWeather })
     },
     {
       label: "Pressure",
-      value: `${current.pressure} hPa`,
+      value: formatPressure(current.pressure, system),
       icon: (
         <svg className="h-5 w-5" viewBox="0 0 24 24" {...stroke}>
           <path d="M12 21a9 9 0 1 0-9-9" />
@@ -83,7 +92,7 @@ export default function WeatherDetails({ current }: { current: CurrentWeather })
     },
     {
       label: "Precipitation",
-      value: `${current.precipitation} mm`,
+      value: formatPrecipitation(current.precipitation, system),
       icon: (
         <svg className="h-5 w-5" viewBox="0 0 24 24" {...stroke}>
           <path d="M16 13a4 4 0 0 0 0-8 5.5 5.5 0 0 0-10.5 1.5A3.5 3.5 0 0 0 6 13" />

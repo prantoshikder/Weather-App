@@ -1,5 +1,7 @@
 "use client";
 
+import { useUnits } from "@/components/UnitsProvider";
+import { formatTemp } from "@/lib/units";
 import { describeWeather, type DailyEntry } from "@/lib/weather";
 
 interface Props {
@@ -8,13 +10,16 @@ interface Props {
 }
 
 export default function DailyForecast({ daily, timezone }: Props) {
-  // Overall range across the week to scale the temperature bars.
+  const { system } = useUnits();
+
+  // Overall range across the week to scale the temperature bars. Kept in °C —
+  // the conversion is linear, so the bar proportions are unit-independent.
   const min = Math.min(...daily.map((d) => d.tempMin));
   const max = Math.max(...daily.map((d) => d.tempMax));
   const span = Math.max(max - min, 1);
 
   return (
-    <section className="glass rounded-3xl p-5">
+    <section id="daily" className="glass scroll-mt-24 rounded-3xl p-5">
       <h2 className="mb-3 px-1 text-sm font-semibold uppercase tracking-wide text-white/70">
         7-day forecast
       </h2>
@@ -40,8 +45,8 @@ export default function DailyForecast({ daily, timezone }: Props) {
                 {cond.icon}
               </span>
               <div className="flex items-center gap-3">
-                <span className="w-8 text-right text-sm text-white/55">
-                  {d.tempMin}°
+                <span className="w-10 text-right text-sm text-white/55">
+                  {formatTemp(d.tempMin, system)}
                 </span>
                 <div className="relative h-1.5 flex-1 rounded-full bg-white/15">
                   <div
@@ -49,7 +54,9 @@ export default function DailyForecast({ daily, timezone }: Props) {
                     style={{ left: `${left}%`, width: `${Math.max(width, 6)}%` }}
                   />
                 </div>
-                <span className="w-8 text-sm font-medium">{d.tempMax}°</span>
+                <span className="w-10 text-sm font-medium">
+                  {formatTemp(d.tempMax, system)}
+                </span>
               </div>
             </div>
           );

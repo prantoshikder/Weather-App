@@ -3,8 +3,9 @@
 import Background from "@/components/Background";
 import CurrentWeatherCard from "@/components/CurrentWeather";
 import DailyForecast from "@/components/DailyForecast";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 import HourlyForecast from "@/components/HourlyForecast";
-import SearchBar from "@/components/SearchBar";
 import SeoContent from "@/components/SeoContent";
 import WeatherDetails from "@/components/WeatherDetails";
 import {
@@ -121,64 +122,59 @@ export default function Home() {
     <>
       <Background group={group} isDay={isDay} />
 
-      <main className="mx-auto flex min-h-screen w-full flex-col gap-6 px-4 py-8 sm:px-6 sm:py-12">
-        <header className="flex flex-col items-center gap-5 sm:flex-row sm:items-center sm:justify-between">
-          {/* The page's single h1 — the visible mark plus a crawlable summary. */}
-          <h1 className="flex items-center gap-2 self-start sm:self-auto">
-            <span className="text-2xl" aria-hidden="true">
-              🌤️
-            </span>
-            <span className="text-xl font-semibold tracking-tight">Aura</span>
-            <span className="sr-only">
-              — live weather forecast, hourly updates and a 7-day outlook for
-              any city
-            </span>
-          </h1>
-          <SearchBar
-            onSelect={load}
-            onUseLocation={() => useLocation(false)}
-            loadingLocation={locating}
-          />
-        </header>
+      <div className="mx-auto flex min-h-screen w-full flex-col gap-6 px-4 py-3 pb-8 sm:px-6 sm:pb-12">
+        <Header
+          onSelect={load}
+          onUseLocation={() => useLocation(false)}
+          loadingLocation={locating}
+          onRefresh={() => load(city)}
+          refreshing={loading}
+        />
 
-        {error && (
-          <div
-            role="alert"
-            className="glass rounded-2xl border-red-300/30 bg-red-500/15 px-4 py-3 text-sm text-red-100"
-          >
-            {error}
-          </div>
-        )}
+        <main
+          id="main-content"
+          className="mx-auto flex w-full max-w-6xl flex-col gap-6"
+        >
+          {error && (
+            <div
+              role="alert"
+              className="glass rounded-2xl border-red-300/30 bg-red-500/15 px-4 py-3 text-sm text-red-100"
+            >
+              {error}
+            </div>
+          )}
 
-        {loading && !weather ? (
-          <LoadingState />
-        ) : weather ? (
-          <div className="flex flex-col gap-6">
-            <div className="grid gap-6 lg:grid-cols-2">
-              <CurrentWeatherCard
-                city={city}
-                current={weather.current}
+          {loading && !weather ? (
+            <LoadingState />
+          ) : weather ? (
+            <div className="flex flex-col gap-6">
+              <div className="grid gap-6 lg:grid-cols-2">
+                <CurrentWeatherCard
+                  city={city}
+                  current={weather.current}
+                  timezone={weather.timezone}
+                />
+                <div className="flex flex-col justify-center">
+                  <WeatherDetails current={weather.current} />
+                </div>
+              </div>
+
+              <HourlyForecast
+                hourly={weather.hourly}
                 timezone={weather.timezone}
               />
-              <div className="flex flex-col justify-center">
-                <WeatherDetails current={weather.current} />
-              </div>
+              <DailyForecast
+                daily={weather.daily}
+                timezone={weather.timezone}
+              />
             </div>
+          ) : null}
 
-            <HourlyForecast
-              hourly={weather.hourly}
-              timezone={weather.timezone}
-            />
-            <DailyForecast daily={weather.daily} timezone={weather.timezone} />
-          </div>
-        ) : null}
+          <SeoContent />
+        </main>
 
-        <SeoContent />
-
-        <footer className="mt-auto pt-6 text-center text-xs text-white/50">
-          Weather by Open-Meteo · Photography by Unsplash
-        </footer>
-      </main>
+        <Footer />
+      </div>
     </>
   );
 }

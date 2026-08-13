@@ -1,0 +1,149 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background: #0b1120;
+  color: #f8fafc;
+  overflow-x: hidden;
+}
+
+/* ---- Custom page scrollbar ---------------------------------------------
+   A slim, floating pill in the app's signature sky → amber gradient. The
+   track stays invisible so the thumb appears to glide directly over the
+   frosted-glass UI; it brightens and gains a soft glow on hover.            */
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(125, 211, 252, 0.45) transparent;
+}
+
+/* WebKit / Chromium / Safari */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  /* 2px transparent border + padding-box clip = a thumb that looks inset
+     with breathing room on each side. */
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  background-color: rgba(125, 211, 252, 0.4);
+  background-image: linear-gradient(
+    180deg,
+    rgba(125, 211, 252, 0.65),
+    rgba(252, 211, 77, 0.6)
+  );
+  transition: background-color 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-image: linear-gradient(
+    180deg,
+    rgba(125, 211, 252, 0.95),
+    rgba(252, 211, 77, 0.9)
+  );
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-image: linear-gradient(180deg, #7dd3fc, #fcd34d);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Thinner variant for inner scroll areas (hourly strip, search dropdown).
+   Apply the `.custom-scroll` class. Same gradient, lighter footprint. */
+.custom-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(125, 211, 252, 0.5) transparent;
+}
+
+.custom-scroll::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  background-image: linear-gradient(
+    90deg,
+    rgba(125, 211, 252, 0.55),
+    rgba(252, 211, 77, 0.55)
+  );
+  transition: background-image 0.2s ease;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background-image: linear-gradient(90deg, #7dd3fc, #fcd34d);
+}
+
+/* Frosted-glass surface used across all cards. */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28);
+}
+
+.glass-strong {
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+/* Smooth cross-fade when the background photo changes. */
+.bg-fade {
+  transition: opacity 1.2s ease-in-out;
+}
+
+@keyframes float-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-float-up {
+  animation: float-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Hide scrollbar for the horizontal hourly strip while keeping scroll. */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

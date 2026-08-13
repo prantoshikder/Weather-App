@@ -6,5 +6,8 @@ next-env.d.ts
 *.tsbuildinfo
 .DS_Store
 .env*.local
-package-lock.json
+
+# Lockfiles are intentionally committed: they pin transitive dependencies so a
+# Vercel build resolves exactly what was tested locally, and let it cache the
+# install step. Keep only one — this project uses npm.
 yarn.lock
